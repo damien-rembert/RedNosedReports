@@ -22,9 +22,14 @@ public class SafetyChecker {
 				if (isSafe(levels)) {
 					System.out.println("safe");
 					safeOnes++;
+				} else if (isDampenable(levels)) {
+					System.out.println("dampenable");
+					safeOnes++;
+				} else {
+					System.out.println("unsafe");
 				}
 			} catch (Exception e) {
-				System.out.println("unsafe");
+				System.out.println("oops");
 			}
 
 		}
@@ -40,19 +45,19 @@ public class SafetyChecker {
 			int a = levels.get(i);
 			int b = levels.get(i + 1);
 			// for (int i = 0; i < levels.size() - 1; i++) {
-			System.out.println(i);
+			// System.out.println(i);
 			if (a == b) {
-				System.out.println("no change");
+				// System.out.println("no change");
 				return false;
 			}
 			if (!isWellSpaced(a, b)) {
-				System.out.println("not well spaced");
+				// System.out.println("not well spaced");
 				return false;
 			}
 			if (i == 0) {
 				isIncreasing = isIncreasing(a, b);
 			} else if (isIncreasing != isIncreasing(a, b)) {
-				System.out.println("not consistent increasing");
+				// System.out.println("not consistent increasing");
 
 				return false;
 			}
@@ -60,6 +65,21 @@ public class SafetyChecker {
 
 		return true;
 
+	}
+
+	static boolean isDampenable(List<Integer> levels) {
+
+		for (int i = 0; i <= levels.size() - 1; i++) {
+			List<Integer> dampenedLevel = new ArrayList<>(levels);
+			dampenedLevel.remove(i);
+			System.out.println(dampenedLevel.toString());
+			if (isSafe(dampenedLevel)) {
+				System.out.println("dampened winner");
+				return true;
+			}
+
+		}
+		return false;
 	}
 
 	static boolean isIncreasing(int a, int b) {
